@@ -1,31 +1,31 @@
-module.exports = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './lib/**/*.{js,ts,jsx,tsx,mdx}'
-  ],
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          50: '#f4f1ff',
-          100: '#e7e0ff',
-          200: '#d3c7ff',
-          300: '#b79eff',
-          400: '#9d80ff',
-          500: '#7d5cf7',
-          600: '#5a38cf',
-          700: '#4a2ea8',
-          800: '#38277d',
-          900: '#261c52'
-        },
-        gold: '#d9b76b',
-        night: '#070b1a'
-      },
-      boxShadow: {
-        glow: '0 0 30px rgba(125, 92, 247, 0.35)'
-      }
-    }
+{
+  "name": "hanouty8.ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
-  plugins: []
-};
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "lucide-react": "^0.525.0",
+    "next": "14.2.15",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.12",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.19",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.15",
+    "postcss": "8.4.39",
+    "tailwindcss": "3.4.10",
+    "typescript": "5.5.4"
+  }
+}
+

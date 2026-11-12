@@ -1,38 +1,103 @@
-# RIBH AI
+'use client';
 
-RIBH AI MVP is a starter platform for a global AI-powered earning ecosystem. The current implementation includes:
+import Link from 'next/link';
+import { useState } from 'react';
+import { ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { isSupabaseReady } from '@/lib/supabase';
 
-- Landing page for the product concept
-- Dashboard for sales and performance analytics
-- AI assistant workspace
-- Markets research pages
-- Admin panel
-- Authentication screen
-- Arabic-first RTL UI with a dark luxury palette
-- Supabase-ready schema and environment configuration
+const benefitList = [
+  'تسجيل دخول آمن مع تراخيص واضحة',
+  'لوحة تحكم MVP جاهزة للتوسعة',
+  'بيانات داخلية صالحة للتطوير ومختبرة',
+  'موافقة قبل الشراء أو النشر أو العمليات الحساسة'
+];
 
-## Stack
+export default function AuthPage() {
+  const [email, setEmail] = useState('demo@ribh.ai');
+  const [password, setPassword] = useState('demo123');
+  const [status, setStatus] = useState('');
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- React + Lucide icons
-- Supabase JavaScript client
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-## Setup
+    if (!isSupabaseReady) {
+      setStatus('تم تسجيل الدخول التجريبي بنجاح. أضف قيم Supabase في المتغيرات البيئية لتفعيل الاتصال الحقيقي.');
+      return;
+    }
 
-1. Create a Supabase project.
-2. Copy `.env.example` to `.env.local`.
-3. Add your project URL and anon key.
-4. Run:
+    setStatus('جارٍ الاتصال بـ Supabase...');
+  };
 
-```bash
-npm install
-npm run dev
-```
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow lg:grid-cols-2">
+        <div className="bg-gradient-to-br from-brand-500/20 via-slate-900 to-purple-900 p-8">
+          <div className="flex h-full flex-col justify-between">
+            <div>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-500/10 px-3 py-1 text-sm text-brand-200">
+                <ShieldCheck size={16} /> تجربة الدخول الآمن
+              </div>
+              <h1 className="text-4xl font-black">RIBH AI</h1>
+              <p className="mt-4 text-slate-300">منصة ذكية لتوليد الدخل وتوسيع الأعمال عبر الذكاء الاصطناعي، الأسواق، والتسويق الرقمي.</p>
+            </div>
 
-Then open http://localhost:3000
+            <ul className="mt-8 space-y-4">
+              {benefitList.map((item) => (
+                <li key={item} className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 size={18} className="text-emerald-300" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-## Important note
+        <div className="p-8">
+          <h2 className="text-2xl font-black">تسجيل الدخول</h2>
+          <p className="mt-2 text-slate-400">ابدأ بإدارة حسابك، مشاريعك، ومساعدك الذكي.</p>
 
-This project is an MVP prototype. It does not claim real external service integrations or real revenue figures. Future phases will connect actual providers only after successful API validation.
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <div>
+              <label className="mb-2 block text-sm text-slate-300">البريد الإلكتروني</label>
+              <input
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3 outline-none placeholder:text-slate-500"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-slate-300">كلمة المرور</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3 outline-none placeholder:text-slate-500"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <button type="submit" className="w-full rounded-2xl bg-gradient-to-r from-brand-500 to-gold px-4 py-3 font-bold text-slate-950">
+              تسجيل الدخول
+            </button>
+
+            <button type="button" className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white">
+              المتابعة مع Google
+            </button>
+
+            {status ? <p className="text-sm text-emerald-300">{status}</p> : null}
+          </form>
+
+          <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
+            <Link href="/" className="hover:text-white">العودة للصفحة الرئيسية</Link>
+            <Link href="/dashboard" className="inline-flex items-center gap-2 font-medium text-brand-200 hover:text-brand-100">
+              عرض لوحة التحكم <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
