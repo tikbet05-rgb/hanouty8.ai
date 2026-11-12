@@ -1,0 +1,70 @@
+import Link from 'next/link';
+import { ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
+
+const benefitList = [
+  'تسجيل دخول آمن مع تراخيص واضحة',
+  'لوحة تحكم MVP جاهزة للتوسعة',
+  'بيانات حقيقية داخلية واضحة وبدون ادعاء أرباح وهمية',
+  'وقاية قبل الشراء أو النشر أو التغييرات الحساسة'
+];
+
+export default function AuthPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-glow lg:grid-cols-2">
+        <div className="bg-gradient-to-br from-brand-500/20 via-slate-900 to-purple-900 p-8">
+          <div className="flex h-full flex-col justify-between">
+            <div>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-500/10 px-3 py-1 text-sm text-brand-200">
+                <ShieldCheck size={16} /> تجربة الدخول الآمن
+              </div>
+              <h1 className="text-4xl font-black">RIBH AI</h1>
+              <p className="mt-4 text-slate-300">منصة ذكية لتوليد الدخل وتوسيع الأعمال عبر AI، الأسواق، والتسويق الرقمي.</p>
+            </div>
+
+            <ul className="mt-8 space-y-4">
+              {benefitList.map((item) => (
+                <li key={item} className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 size={18} className="text-emerald-300" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="p-8">
+          <h2 className="text-2xl font-black">تسجيل الدخول</h2>
+          <p className="mt-2 text-slate-400">ابدأ بإدارة حسابك، مشاريعك، ومساعدك الذكي.</p>
+
+          <div className="mt-6 space-y-4">
+            <div>
+              <label className="mb-2 block text-sm text-slate-300">البريد الإلكتروني</label>
+              <input className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3 outline-none placeholder:text-slate-500" placeholder="you@example.com" />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-slate-300">كلمة المرور</label>
+              <input type="password" className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3 outline-none placeholder:text-slate-500" placeholder="••••••••" />
+            </div>
+
+            <button className="w-full rounded-2xl bg-gradient-to-r from-brand-500 to-gold px-4 py-3 font-bold text-slate-950">
+              تسجيل الدخول
+            </button>
+
+            <button className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white">
+              المتابعة مع Google
+            </button>
+          </div>
+
+          <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
+            <Link href="/" className="hover:text-white">العودة للصفحة الرئيسية</Link>
+            <Link href="/dashboard" className="inline-flex items-center gap-2 font-medium text-brand-200 hover:text-brand-100">
+              عرض لوحة التحكم <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

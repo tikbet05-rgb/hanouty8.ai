@@ -1,0 +1,31 @@
+module.exports = {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}'
+  ],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: '#f4f1ff',
+          100: '#e7e0ff',
+          200: '#d3c7ff',
+          300: '#b79eff',
+          400: '#9d80ff',
+          500: '#7d5cf7',
+          600: '#5a38cf',
+          700: '#4a2ea8',
+          800: '#38277d',
+          900: '#261c52'
+        },
+        gold: '#d9b76b',
+        night: '#070b1a'
+      },
+      boxShadow: {
+        glow: '0 0 30px rgba(125, 92, 247, 0.35)'
+      }
+    }
+  },
+  plugins: []
+};
