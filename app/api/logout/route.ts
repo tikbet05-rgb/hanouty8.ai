@@ -24,4 +24,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/dashboard/:path*', '/assistant/:path*', '/markets/:path*', '/pricing/:path*', '/profile/:path*', '/admin/:path*']
 };
-

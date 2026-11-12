@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { isSupabaseReady } from '@/lib/supabase';
@@ -13,19 +14,36 @@ const benefitList = [
 ];
 
 export default function AuthPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('demo@ribh.ai');
   const [password, setPassword] = useState('demo123');
   const [status, setStatus] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    setStatus('');
 
-    if (!isSupabaseReady) {
-      setStatus('تم تسجيل الدخول التجريبي بنجاح. أضف قيم Supabase في المتغيرات البيئية لتفعيل الاتصال الحقيقي.');
+    const redirectTo = searchParams.get('redirectTo') || '/dashboard';
+
+    const response = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      setStatus(result.message || 'تم تسجيل الدخول بنجاح.');
+      router.push(redirectTo);
       return;
     }
 
-    setStatus('جارٍ الاتصال بـ Supabase...');
+    setStatus(result.message || 'حدث خطأ أثناء تسجيل الدخول.');
+    setIsSubmitting(false);
   };
 
   return (
@@ -78,8 +96,18 @@ export default function AuthPage() {
               />
             </div>
 
-            <button type="submit" className="w-full rounded-2xl bg-gradient-to-r from-brand-500 to-gold px-4 py-3 font-bold text-slate-950">
-              تسجيل الدخول
+            {!isSupabaseReady ? (
+              <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-3 text-sm text-amber-200">
+                تم تفعيل الوضع التجريبي. أضف NEXT_PUBLIC_SUPABASE_URL و NEXT_PUBLIC_SUPABASE_ANON_KEY لتفعيل Supabase الحقيقي.
+              </div>
+            ) : null}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full rounded-2xl bg-gradient-to-r from-brand-500 to-gold px-4 py-3 font-bold text-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isSubmitting ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
             </button>
 
             <button type="button" className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white">
@@ -100,4 +128,3 @@ export default function AuthPage() {
     </div>
   );
 }
-
