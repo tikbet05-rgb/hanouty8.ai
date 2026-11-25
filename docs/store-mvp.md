@@ -2,31 +2,25 @@
 
 ## Database setup
 
-Execute `supabase/migrations/202611250001_store_mvp.sql` in Supabase SQL editor. This migration enables RLS for products, orders, and expenses and restricts each authenticated owner to their own records.
+Execute `supabase/migrations/202611250001_store_mvp.sql` in the Supabase SQL editor. It enables RLS for products, orders, and expenses and scopes records to each authenticated owner.
 
-## API routes
+## Store interface and API
 
-- `GET /api/store/products`
-- `POST /api/store/products`
-- `GET /api/store/orders`
-- `POST /api/store/orders`
+Open `/store` to manage products and review orders. Product changes use the signed-in Supabase access token; the API verifies it and PostgreSQL RLS enforces ownership.
 
-All requests require `Authorization: Bearer <Supabase access token>`.
+- `GET /api/store/products` — list products
+- `POST /api/store/products` — create a draft product
+- `PATCH /api/store/products/:id` — update an owned product
+- `DELETE /api/store/products/:id` — delete an owned product
+- `GET /api/store/orders` — list orders
+- `POST /api/store/orders` — create a pending order
 
-The API verifies the token before querying and also relies on PostgreSQL RLS. The service-role key must never be sent to the browser.
+All API requests require `Authorization: Bearer <Supabase access token>`. Never send the service-role key to a browser.
 
 ## Financial integrity
 
-- Client requests cannot set order totals or payment verification fields.
-- New orders begin as `pending` with zero totals.
-- Revenue and paid status require a server-side payment-provider webhook with valid signature verification.
-- No external marketplace or Shopify connection is active by default.
+Order totals, payment status, and revenue are not accepted from clients. Orders created by this flow remain pending with zero totals. A verified payment-provider webhook is required before marking an order paid or recording revenue. No Shopify or other marketplace connection is active by default.
 
 ## Configuration
 
-Set:
-
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-
-Keep `SUPABASE_SERVICE_ROLE_KEY` server-only and add it only for verified webhooks or administrative operations after implementing them.
+Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in the deployment environment and complete Supabase Auth sign-in. Keep `SUPABASE_SERVICE_ROLE_KEY` server-only; it is not required for the current interface or APIs.
